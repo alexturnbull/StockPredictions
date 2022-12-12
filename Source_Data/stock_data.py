@@ -19,11 +19,12 @@ def GetStockData(stock):
     return stock_data
 
 
-
+stocks_of_intrest = ['AAPL', 'MSTF', 'TSLA', 'DB']
 
 
 AAPL_data = GetStockData('AAPL')
-print(AAPL_data)
+MSFT_data = GetStockData('MSFT')
+
 
 #write to sql 
 DRIVER_NAME = '{SQL Server}'
@@ -32,10 +33,10 @@ DATABASE_NAME ='StockData'
 PASS = os.environ.get('PASSOS')
 USER = os.environ.get('USEROS')
 
-connection_string_admin = f"""DRIVER={DRIVER_NAME}; SERVER={SERVER_NAME}; DATABASE={DATABASE_NAME}; Trust_Connection=yes"""
-#connection_string_etl = f"""DRIVER={DRIVER_NAME}; SERVER={SERVER_NAME}; DATABASE={DATABASE_NAME}; UID={USER}; PWD={PASS}"""
+#connection_string_admin = f"""DRIVER={DRIVER_NAME}; SERVER={SERVER_NAME}; DATABASE={DATABASE_NAME}; Trust_Connection=yes"""
+connection_string_etl = f"""DRIVER={DRIVER_NAME}; SERVER={SERVER_NAME}; DATABASE={DATABASE_NAME}; UID={USER}; PWD={PASS}"""
 
-connection_url = URL.create("mssql+pyodbc", query={"odbc_connect": connection_string_admin})
+connection_url = URL.create("mssql+pyodbc", query={"odbc_connect": connection_string_etl})
 engine = create_engine(connection_url) 
 
-#AAPL_data.to_sql(name='AAPL', con=engine, schema='dbo', if_exists='replace', index=False)
+MSFT_data.to_sql(name='MSFT', con=engine, schema='dbo', if_exists='replace', index=False)
